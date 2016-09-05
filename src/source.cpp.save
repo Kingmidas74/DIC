@@ -50,6 +50,8 @@ bool checkBitMask(bitset<16> &ItemBitMask, bitset<16> &NoItemBitMask)
 	return (ItemBitMask&NoItemBitMask)==ItemBitMask;
 }
 
+
+
 int main(int argc, char *argv[])
 {
 	/*
@@ -105,25 +107,58 @@ int main(int argc, char *argv[])
 		}
 
 	
-		ProductSet* candidate = allocateAlign<ProductSet>(1);
+		ProductSet candidate;
+		ProductSet* Candidates = allocateAlign<ProductSet>(1000);
+		size_t CandidatesCount=0;
+		ProductSet* Retired = allocateAlign<ProductSet>(1000);
+		size_t RetiredCount=0;
 
 		for(size_t i=0; i<DashedCircleCount; i++)
 		{
-			if(DashedCircle[i].Support>minsup)
+			if(DashedCircle[i].Support>=minsup)
 			{
 				for(size_t j=0; j<DashedBoxCount; j++)
 				{
 					if(DashedCircle[i].K==DashedBox[j].K)
 					{
-						candidate[0].BitMask=DashedCircle[i].BitMask | DashedBox[j].BitMask;
-						candidate[0].K=DashedCircle[i].K;
-						candidate[0].Support=0;
-						//DashedCircle.insert(candidate);
+						candidate.BitMask=DashedCircle[i].BitMask || DashedBox[j].BitMask;
+						candidate.K=DashedCircle[i].K+1;
+						candidate.Support=0;
+						candidate.StopNo=0;
+						Candidates[CandidatesCount]=candidate;
+						CandidatesCount++;
 					}
 				}
+				for(size_t j=0; j<SolidBoxCount; j++) 
+				{
+					if(DashedCircle[i].K==SolidBox[j].K)
+					{
+						candidate.BitMask=DashedCircle[i].BitMask || SolidBox[i].BitMask;
+						candidate.K=DashedCircle[i].K+1;
+						candidate.Support=0;
+						candidate.StopNo=0;
+						Candidates[CandidatesCount]=candidate;
+						CandidatesCount++;
+					}
+				}
+				Retired[RetiredCount]=DashedCircle[i];
 			}
 
 		}
+
+		for(size_t i=0; i<CandidatesCount; i++)
+		{
+			DashedCircle[DashedCircleCount+i]=Candidates[i];
+			DashedCircleCount++;
+		}
+
+		for(size_t i=0; i<RetiredCount; i++)
+		{
+			DashedBox[DashedBoxCount+i]=Retired[i];
+			DashedBoxCount++;
+			DashedCircle[i];
+		}
+		
 		
 		
 	}
