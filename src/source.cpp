@@ -177,6 +177,8 @@ int main(int argc, char *argv[])
 	Products = allocateAlign<ProductSet>(count);
 	/*Finish init*/
 
+	srand(time(nullptr));
+	
 	fillDashedCircle();
 	
 	size_t MPerThread=100;
@@ -204,7 +206,7 @@ int main(int argc, char *argv[])
 	}
 	
 		
-	srand(time(nullptr));
+	
 	
 	return EXIT_SUCCESS;
 }
