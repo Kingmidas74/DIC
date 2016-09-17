@@ -1,10 +1,20 @@
 #pragma once
 
+/**
+DICParameters.hpp
+Purpose: Parser of cmd parameters.
+
+@author		Suleymanov D.
+@version	0.0.0.1 9/17/2016
+*/
+
 #include <fstream>
 #include <sstream>
-#include "Parameters.hpp"
 #include <vector>
 #include <math.h>
+
+#include "Parameters.hpp"
+
 
 namespace DIC {
 	using namespace std;
@@ -24,7 +34,7 @@ namespace DIC {
 			allParameters.CountOfTransactions = 10;
 
 			_argc = argc - 1;
-			for (int i = 1; i < argc; i++)
+			for (auto i = 1; i < argc; i++)
 			{
 				_argv.push_back(string(argv[i]));
 			}
@@ -51,12 +61,12 @@ namespace DIC {
 
 		void parse()
 		{
-			for (int i = 0; i < _argc; i = i + 2)
+			for (auto i = 0; i < _argc; i = i + 2)
 			{
 				if (_argv[i].compare("-i") == 0) getInputFilPath(i + 1);
 				if (_argv[i].compare("-o") == 0) getOutputFilPath(i + 1);
 				if (_argv[i].compare("-c") == 0) getCountOfCores(i + 1);
-				if (_argv[i].compare("-d") == 0) getCountOfTransactions(i + 1);
+				if (_argv[i].compare("-d") == 0) getCountOfItemsets(i + 1);
 				if (_argv[i].compare("-m") == 0) getCountOfItems(i + 1);
 				if (_argv[i].compare("-s") == 0) getMinimumSupport(i + 1);
 				if (_argv[i].compare("-t") == 0) getCountOfThreads(i + 1);
@@ -89,7 +99,7 @@ namespace DIC {
 			}
 		}
 
-		void getCountOfTransactions(int numberOfparameter)
+		void getCountOfItemsets(int numberOfparameter)
 		{
 			if (&_argv[numberOfparameter])
 			{

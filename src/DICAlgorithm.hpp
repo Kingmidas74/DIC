@@ -1,7 +1,15 @@
 #pragma once
 
-#include "Parameters.hpp"
+/**
+DICAlgorithm.hpp
+Purpose: Base class for algorithm.
 
+@author		Suleymanov D.
+@version	0.0.0.1 9/17/2016
+*/
+
+#include "Parameters.hpp"
+#include "Consts.hpp"
 
 namespace DIC
 {
@@ -19,6 +27,7 @@ namespace DIC
 
 		Parameters* DICparameters;
 
+
 		inline void fillDashedCircle()
 		{
 			for (unsigned long long i = 1; i<=DICparameters->CountOfItems; i++)
@@ -32,15 +41,15 @@ namespace DIC
 			return (dashedBox.Size + dashedCircle.Size) == 0;
 		}
 
-		inline bool checkBitMask(bitset<12> &ItemBitMask, bitset<12> &NoItemBitMask) const
+		inline bool checkBitMask(bitset<BITSET_SIZE> &ItemBitMask, bitset<BITSET_SIZE> &NoItemBitMask) const
 		{
 			return (ItemBitMask&NoItemBitMask) == ItemBitMask;
 		}
 
-		inline void CountSupport(unsigned long long &stopNo, unsigned long long &M)
+		inline void CountSupport(unsigned long long &stopNo)
 		{
-			auto first = M*(stopNo - 1);
-			auto last = M*stopNo - 1;
+			auto first = DICparameters->CountOfItems*(stopNo - 1);
+			auto last = DICparameters->CountOfItems*stopNo - 1;
 
 			for (auto i = first; i <= last;i++)
 			{
@@ -182,7 +191,6 @@ namespace DIC
 				GenerateCandidates();
 				CheckPassCompletion(stopNo);
 				*/
-
 			}
 		}
 	};

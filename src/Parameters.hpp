@@ -1,9 +1,19 @@
 #pragma once
 
+/**
+Parameters.hpp
+Purpose: Struct for save parameters.
+
+@author		Suleymanov D.
+@version	0.0.0.1 9/17/2016
+*/
+
 #include <iostream>
+
 namespace DIC
 {
 	using namespace std;
+
 	struct Parameters
 	{
 		unsigned long long	CountOfTransactions;

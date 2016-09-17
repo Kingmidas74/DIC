@@ -1,15 +1,24 @@
 #pragma once
 
+/**
+Itemsets.hpp
+Purpose: Struct for save itemsets.
+
+@author		Suleymanov D.
+@version	0.0.0.1 9/17/2016
+*/
+
 #include <bitset>
+
+#include "Consts.hpp"
 
 namespace DIC
 {
-
 	struct Itemsets {
 		unsigned long long		 Support;
 		unsigned long long		 StopNo;
 		unsigned long long		 K;
-		bitset<12>	 BitMask;
+		bitset<BITSET_SIZE>		 BitMask;
 	};
 
 }

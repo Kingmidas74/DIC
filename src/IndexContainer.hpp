@@ -1,6 +1,14 @@
 #pragma once
 
-#include "Helper.hpp"
+/**
+IndexContainer.hpp
+Purpose: Custom container for arrays.
+
+@author		Suleymanov D.
+@version	0.0.0.1 9/17/2016
+*/
+
+#include "Allocators.hpp"
 
 namespace DIC
 {
@@ -14,16 +22,16 @@ namespace DIC
 
 	public:
 		
-
 		unsigned long long Size;
 
 		IndexContainer()
 		{
-			
+			Size = 0;
 		}
+
 		IndexContainer(unsigned long long &size)
 		{
-			content = allocateAlign<Content>(size);
+			content = allocateAlign<Content>(size);			
 			Size = 0;
 		}
 
@@ -36,29 +44,15 @@ namespace DIC
 			return content[index];
 		}
 
-		Content & operator[](int & index) {
-			if (index < 0) throw "Null index!";
-			return content[index];
-		}
-
-		void SetValue(Content value, unsigned long long index)
-		{
-			content[index] = value;
-		}
-
-		Content GetValue(unsigned long long index)
-		{
-			return &content[index];
-		}
-
 		void Append(Content &item)
 		{
 			content[Size] = item;
 			Size++;
 		}
-
+		
 		void RemoveByIndex(unsigned long long index)
 		{
+			
 			content[index] = NULL;
 		}
 

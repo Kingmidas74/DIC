@@ -1,16 +1,21 @@
 #pragma once
 
-/*
+/**
+DIC.h
+Purpose: Primary .h file for include every elements.
 
-Единая точка для подлкючения необходимых зависимостей.
-Авторы: Сулейманов Д.Э., Цымблер М.Л.
+@author		Suleymanov D.
+@version	0.0.0.1 9/17/2016
 */
 
-#include "Helper.hpp"
+#include "Allocators.hpp"
+#include "Consts.hpp"
 #include "Itemsets.hpp"
-#include "IndexContainer.hpp"
-#include "DICAlgorithm.hpp"
 #include "Parameters.hpp"
+#include "IndexContainer.hpp"
+#include "DICParameters.hpp"
+#include "DICAlgorithm.hpp"
+#include "Executor.hpp"
 
 
 using namespace DIC;
