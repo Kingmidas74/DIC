@@ -1,6 +1,6 @@
-SOURCES = ./src/source.cpp
+SOURCES = ./src/Source.cpp
 TARGET := ./build/
-BASE_OPTIONS := -std=c++11 -qopenmp -O2 -vec-report=5
+BASE_OPTIONS := -std=c++11 -qopenmp -O3 -vec-report=5
 
 all:
 	mkdir -p $(TARGET)
