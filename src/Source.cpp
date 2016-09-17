@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "DIC.h"
+#include "./dic/DIC.h"
 
 using namespace std;
 

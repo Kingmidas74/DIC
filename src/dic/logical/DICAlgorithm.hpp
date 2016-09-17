@@ -8,9 +8,6 @@ Purpose: Base class for algorithm.
 @version	0.0.0.1 9/17/2016
 */
 
-#include "Parameters.hpp"
-#include "Consts.hpp"
-
 namespace DIC
 {
 	class DICAlgorithm

@@ -10,8 +10,6 @@ Purpose: Struct for save itemsets.
 
 #include <bitset>
 
-#include "Consts.hpp"
-
 namespace DIC
 {
 	struct Itemsets {

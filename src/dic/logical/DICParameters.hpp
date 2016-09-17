@@ -13,9 +13,6 @@ Purpose: Parser of cmd parameters.
 #include <vector>
 #include <math.h>
 
-#include "Parameters.hpp"
-
-
 namespace DIC {
 	using namespace std;
 

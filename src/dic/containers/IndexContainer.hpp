@@ -8,8 +8,6 @@ Purpose: Custom container for arrays.
 @version	0.0.0.1 9/17/2016
 */
 
-#include "Allocators.hpp"
-
 namespace DIC
 {
 	template<typename Content>

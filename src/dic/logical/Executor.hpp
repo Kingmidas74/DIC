@@ -15,12 +15,6 @@ Purpose: Incapsulation of workflow.
 #include <ctime>
 #include <omp.h>
 
-#include "Consts.hpp"
-#include "Parameters.hpp"
-#include "Itemsets.hpp"
-#include "IndexContainer.hpp"
-#include "DICAlgorithm.hpp"
-
 namespace DIC {
 
 	using namespace std;
