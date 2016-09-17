@@ -165,7 +165,9 @@ namespace DIC
 			unsigned long long step = 0;
 			while (!dashedIsEmpty() && step<15)
 			{
-				cout << "step: " << step << endl;
+				cout << "step " << step << endl;
+				step++;
+				/*cout << "step: " << step << endl;
 				step++;
 				stopNo++;
 				if (stopNo>DICparameters->CountOfTransactions / DICparameters->CountOfItems)
@@ -175,7 +177,7 @@ namespace DIC
 				cout << "stopNo: " << stopNo << endl;
 				unsigned long long a = 1;
 				cout << AllItems[a].BitMask[1];
-				/*
+				
 				CountSupport(stopNo, DICparameters->CountOfItems);
 				GenerateCandidates();
 				CheckPassCompletion(stopNo);
