@@ -35,7 +35,10 @@ namespace DIC
 
 		~IndexContainer()
 		{
-			freeAlign(content);
+			if (sizeof(content) / sizeof(Content) > 0)
+			{
+				freeAlign<Content>(content);
+			}
 		}
 
 		Content & operator[](unsigned long long & index) {
@@ -49,9 +52,13 @@ namespace DIC
 		}
 		
 		void RemoveByIndex(unsigned long long index)
-		{
-			
-			content[index] = NULL;
+		{	
+			--Size;
+			for (unsigned long long i = index;i < Size; ++i)
+			{
+				content[index] = content[index + 1];
+			}
+			content[Size] = NULL;
 		}
 
 	};

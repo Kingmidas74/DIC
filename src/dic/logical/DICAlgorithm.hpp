@@ -61,10 +61,10 @@ namespace DIC
 			{
 				if(container[j] != NULL) continue;				
 				auto currentItem = AllItems[container[j]];
-				currentItem.StopNo++;
-				if (checkBitMask(currentItem.BitMask, currentItem.BitMask))
+				AllItems[container[j]].StopNo++;
+				if (checkBitMask(AllItems[container[j]].BitMask, AllItems[container[j]].BitMask))
 				{
-					currentItem.Support++;
+					AllItems[container[j]].Support++;
 				}
 			}
 		}
