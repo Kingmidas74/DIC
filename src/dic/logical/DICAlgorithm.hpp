@@ -59,8 +59,6 @@ namespace DIC
 		{
 			for (unsigned long long j = 0; j<container.Size; j++)
 			{
-				if(container[j] != NULL) continue;				
-				auto currentItem = AllItems[container[j]];
 				AllItems[container[j]].StopNo++;
 				if (checkBitMask(AllItems[container[j]].BitMask, AllItems[container[j]].BitMask))
 				{
@@ -184,9 +182,9 @@ namespace DIC
 					stopNo = 1;
 				}
 			
-				CountSupport(stopNo);
+				/*CountSupport(stopNo);
 				GenerateCandidates();
-				CheckPassCompletion(stopNo);
+				CheckPassCompletion(stopNo);*/
 				
 			}
 			cout << "SBS=" << solidBox.Size << endl;

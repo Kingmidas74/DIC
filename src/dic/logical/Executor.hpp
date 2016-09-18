@@ -39,7 +39,7 @@ namespace DIC {
 
 			if (tryReadFile(data, AlgorithmParameters))
 			{
-				int start = omp_get_wtime();
+				auto start = omp_get_wtime();
 				auto algorithm = DICAlgorithm(data, AlgorithmParameters);
 				algorithm.GetResult();
 				Runtime = (omp_get_wtime() - start);
@@ -88,7 +88,6 @@ namespace DIC {
 
 				istringstream ss(s);
 
-				unsigned long long total = 0;
 				Itemsets item;
 				item.K = 0;
 				item.StopNo = 0;

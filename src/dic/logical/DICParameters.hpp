@@ -153,7 +153,7 @@ namespace DIC {
 		{
 			if (&_argv[numberOfparameter])
 			{
-				double val;
+				unsigned long long val;
 				istringstream iss(_argv[numberOfparameter]);
 				if (iss >> val)
 				{
