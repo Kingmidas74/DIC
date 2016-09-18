@@ -33,9 +33,9 @@ namespace DIC
 			}
 		}
 
-		inline bool dashedIsEmpty()
+		inline bool dashedIsNotEmpty()
 		{
-			return (dashedBox.Size + dashedCircle.Size) == 0;
+			return (dashedBox.Size + dashedCircle.Size) > 0;
 		}
 
 		inline bool checkBitMask(bitset<BITSET_SIZE> &ItemBitMask, bitset<BITSET_SIZE> &NoItemBitMask) const
@@ -119,7 +119,7 @@ namespace DIC
 			{
 				dashedBox.Append(retired[i]);
 			}
-
+			retired.Clean();
 		}
 
 		inline void CheckPassCompletion(unsigned long long &stopNo)
@@ -174,24 +174,23 @@ namespace DIC
 			fillDashedCircle();
 
 			unsigned long long step = 0;
-			while (!dashedIsEmpty() && step<15)
+			
+			while (dashedIsNotEmpty() && step<15)
 			{
-				cout << "step " << step << endl;
 				step++;
 				stopNo++;
 				if (stopNo>DICparameters->CountOfTransactions / DICparameters->CountOfItems)
 				{
 					stopNo = 1;
 				}
-				/*cout << "stopNo: " << stopNo << endl;
-				unsigned long long a = 1;
-				cout << AllItems[a].BitMask[1];
-				
-				CountSupport(stopNo, DICparameters->CountOfItems);
+			
+				CountSupport(stopNo);
 				GenerateCandidates();
 				CheckPassCompletion(stopNo);
-				*/
+				
 			}
+			cout << "SBS=" << solidBox.Size << endl;
+			cout << "step is " << step << endl;
 		}
 	};
 }
