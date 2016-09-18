@@ -21,23 +21,33 @@ namespace DIC
 	public:
 		
 		unsigned long long Size;
+		unsigned long long Length;
 
 		IndexContainer()
 		{
 			Size = 0;
+			Length = 0;
 		}
 
 		IndexContainer(unsigned long long &size)
 		{
 			content = allocateAlign<Content>(size);			
 			Size = 0;
+			Length = size;
 		}
 
 		~IndexContainer()
 		{
+			
+		}
+
+		void Clean()
+		{
 			if (sizeof(content) / sizeof(Content) > 0)
 			{
 				freeAlign<Content>(content);
+				Size = 0;
+				Length = 0;
 			}
 		}
 
@@ -47,8 +57,15 @@ namespace DIC
 
 		void Append(Content &item)
 		{
-			content[Size] = item;
-			Size++;
+			if (Length > 0)
+			{
+				content[Size] = item;
+				Size++;
+			}
+			else
+			{
+				throw "Memory is not allocated!";
+			}
 		}
 		
 		void RemoveByIndex(unsigned long long index)

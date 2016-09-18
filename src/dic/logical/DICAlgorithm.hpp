@@ -159,6 +159,11 @@ namespace DIC
 
 		~DICAlgorithm()
 		{
+			dashedBox.Clean();
+			dashedCircle.Clean();
+			solidBox.Clean();
+			solidCircle.Clean();
+			AllItems.Clean();
 		}
 
 		void GetResult()
@@ -167,20 +172,18 @@ namespace DIC
 			unsigned long long stopNo = 0;
 			
 			fillDashedCircle();
-			cout << "DCS=" << dashedCircle.Size << endl; //А вот тут ничего!
+
 			unsigned long long step = 0;
 			while (!dashedIsEmpty() && step<15)
 			{
 				cout << "step " << step << endl;
-				step++;
-				/*cout << "step: " << step << endl;
 				step++;
 				stopNo++;
 				if (stopNo>DICparameters->CountOfTransactions / DICparameters->CountOfItems)
 				{
 					stopNo = 1;
 				}
-				cout << "stopNo: " << stopNo << endl;
+				/*cout << "stopNo: " << stopNo << endl;
 				unsigned long long a = 1;
 				cout << AllItems[a].BitMask[1];
 				
