@@ -33,14 +33,14 @@ namespace DIC {
 
 		void FindResult()
 		{
-			auto data = IndexContainer<Itemsets>(AlgorithmParameters->CountOfItemsets);
+			auto transactions = IndexContainer<bitset<BITSET_SIZE>>(AlgorithmParameters->CountOfItemsets);
 
 			setDateTime();
 
-			if (tryReadFile(data, AlgorithmParameters))
+			if (tryReadFile(transactions, AlgorithmParameters))
 			{
 				auto start = omp_get_wtime();
-				auto algorithm = DICAlgorithm(data, AlgorithmParameters);
+				auto algorithm = DICAlgorithm(transactions, AlgorithmParameters);
 				algorithm.GetResult();
 				Runtime = (omp_get_wtime() - start);
 
@@ -77,7 +77,7 @@ namespace DIC {
 				Runtime << endl;
 		}
 
-		bool tryReadFile(IndexContainer<Itemsets> &data, Parameters* parameters)
+		bool tryReadFile(IndexContainer<bitset<BITSET_SIZE>> &data, Parameters* parameters)
 		{
 			fstream infile(parameters->InputFilePath);
 			unsigned long long row = 0;
@@ -88,11 +88,8 @@ namespace DIC {
 
 				istringstream ss(s);
 
-				Itemsets item;
-				item.K = 0;
-				item.StopNo = 0;
-				item.Support = 0;
-				item.BitMask = bitset<BITSET_SIZE>(0);
+				auto bitmask = bitset<BITSET_SIZE>();
+
 				while (ss)
 				{
 
@@ -102,15 +99,14 @@ namespace DIC {
 
 					istringstream iss(str);
 
-
 					if (iss >> p)
 					{
-						item.BitMask[p - 1] = 1;
+						bitmask[p] = 1;
 					}
 
 				}
-				cout << "item " << row << "=" << item.BitMask << endl;
-				data.Append(item);
+				cout << "transaction " << row << "=" << bitmask.to_string() << endl;
+				data.Append(bitmask);
 				row++;
 			}
 			return true;

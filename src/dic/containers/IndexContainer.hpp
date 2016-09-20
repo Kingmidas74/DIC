@@ -51,7 +51,17 @@ namespace DIC
 			}
 		}
 
+		void Clear()
+		{
+				Size = 0;
+			
+		}
+
 		Content & operator[](unsigned long long & index) {
+			return content[index];
+		}
+
+		Content & operator[](unsigned int & index) {
 			return content[index];
 		}
 
@@ -70,11 +80,16 @@ namespace DIC
 		
 		void RemoveByIndex(unsigned long long index)
 		{	
-			--Size;
-			for (unsigned long long i = index;i < Size; ++i)
+
+			//cout << "REMOVE BY INDEX " << index << endl;
+			for (unsigned long long i = index;i < Size-1; ++i)
 			{
-				content[index] = content[index + 1];
+				//cout << "AND " << (i + 1) << " BECAME A " << i << endl;
+				//cout << "AND content[" << i << " WAS A " << content[i] << endl;
+				content[i] = content[i + 1];
+				//cout << "AND content[" << i << " BECAME A " << content[i] << endl;
 			}
+			--Size;
 			content[Size] = NULL;
 		}
 

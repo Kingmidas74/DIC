@@ -17,6 +17,7 @@ namespace DIC
 		unsigned long long		 StopNo;
 		unsigned long long		 K;
 		bitset<BITSET_SIZE>		 BitMask;
+		unsigned long long		 Number;
 	};
 
 }

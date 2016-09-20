@@ -27,8 +27,9 @@ namespace DIC {
 			allParameters.OutputFilePath = "output.csv";
 			allParameters.CountOfThreads = 1;
 			allParameters.CountOfCores = 1;
-			allParameters.CountOfItems = 10;
-			allParameters.CountOfTransactions = 10;
+			allParameters.CountOfItems = 9;
+			allParameters.CountOfTransactions = 15;
+			allParameters.MPerThread = 5;
 
 			_argc = argc - 1;
 			for (auto i = 1; i < argc; i++)
@@ -46,6 +47,7 @@ namespace DIC {
 		{
 			parse();
 			allParameters.CountOfItemsets = pow(2, allParameters.CountOfItems);
+			allParameters.NeedTransactions = 5;//allParameters.CountOfCores*allParameters.CountOfThreads*allParameters.MPerThread;
 			return allParameters;
 		}
 

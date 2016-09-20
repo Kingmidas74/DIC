@@ -1,3 +1,5 @@
+#pragma warning (disable : 4068 )
+
 #include <iostream>
 
 #include "./dic/DIC.hpp"
