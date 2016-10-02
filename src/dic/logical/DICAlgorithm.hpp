@@ -8,157 +8,131 @@ Purpose: Base class for algorithm.
 @version	0.0.0.1 9/17/2016
 */
 
+
 namespace DIC
 {
 	class DICAlgorithm
 	{
 
 	private:
+
 #pragma region Fields
 		
-		IndexContainer<unsigned long long>	 dashedCircle;
-		IndexContainer<unsigned long long>	 dashedBox;
-		IndexContainer<unsigned long long>	 solidCircle;
-		IndexContainer<unsigned long long>	 solidBox;
-		IndexContainer<Itemsets>			 AllItems;
+		IndexContainer<int>	 dashedCircle;
+		IndexContainer<int>	 dashedBox;
+		IndexContainer<int>	 solidCircle;
+		IndexContainer<int>	 solidBox;
+		IndexContainer<int>	 transferIndexes;
+		IndexContainer<Itemsets> AllItems;
+
 
 		IndexContainer<bitset<BITSET_SIZE>> Transactions;
-
 		Parameters* DICparameters;
 
 #pragma endregion
 
 #pragma region AncillaryFunction
-		
+
 		inline void fillDashedCircle()
 		{
-			Itemsets zero_itemset;
-			zero_itemset.K = 0;
-			zero_itemset.Number = 0;
-			zero_itemset.StopNo = 0;
-			zero_itemset.Support = 0;
-			zero_itemset.BitMask = bitset<BITSET_SIZE>(0);
-			zero_itemset.BitMask[0] = 1;
-			AllItems.Append(zero_itemset);
-			unsigned long long zero = 0;
-			dashedCircle.Append(zero);
-			
-			for (unsigned long long i = 0; i<=DICparameters->CountOfItems; i++)
+			for (int i = 0; i<=DICparameters->CountOfItems; i++)
 			{
-				Itemsets itemset;
-				itemset.K = 0;
-				itemset.Number = i;
-				itemset.StopNo = 0;
-				itemset.Support = 0;
-				itemset.BitMask = bitset<BITSET_SIZE>(0);
-				itemset.BitMask[i] = 1;
-				if (i > 0) {
-					AllItems.Append(itemset);
-					dashedCircle.Append(i);
-				}
+				dashedCircle.Append(i);
 			}
-			
-			/*dashedCircle.RemoveByIndex(zero);
-			AllItems.RemoveByIndex(zero);*/
-
+		}
+		
+		inline void initFirstItemsets()
+		{
+			for(int i=0; i<=DICparameters->CountOfItems; i++)
+			{
+				Itemsets item = Itemsets(i);
+				AllItems.Append(item);
+			}
 		}
 
 		inline bool dashedIsNotEmpty()
 		{
-			return (dashedBox.Size + dashedCircle.Size) > 1;
+			return (dashedBox.Length + dashedCircle.Length) > 0;
 		}
 
-		inline bool checkBitMask(bitset<BITSET_SIZE> &ItemsetsBitMask, bitset<BITSET_SIZE> &TransactionBitMask) const
-		{	
-			return (ItemsetsBitMask&TransactionBitMask) == ItemsetsBitMask;
-		}
-
-		inline void transferBetweenContainers(IndexContainer<unsigned long long> &FromContainer, IndexContainer<unsigned long long> &ToContainer, IndexContainer<unsigned long long> &WhichContainer)
+		inline void transferBetweenContainers(IndexContainer<int> &FromContainer, IndexContainer<int> &ToContainer, IndexContainer<int> &WhichContainer)
 		{
-			if(WhichContainer.Size==0) return;
-			//printContainerElements(FromContainer, "from");
-			//printContainerElements(ToContainer, "to");
-			//printContainerElements(WhichContainer, "which");
-			for(unsigned long long i=0; i<WhichContainer.Size; i++)
+			if (WhichContainer.Length == 0) return;
+			int zero = 0;
+
+			printContainerElements(FromContainer, "from");
+			printContainerElements(ToContainer, "to");
+			printContainerElements(WhichContainer, "which");
+
+			for (auto &index:WhichContainer)
 			{
-				//cout << "transfer " << WhichContainer[i] << " element" <<"___"<<i<<"___"<< endl;
-				ToContainer.Append(FromContainer[WhichContainer[i]]);
+				ToContainer.Append(FromContainer[index]);
 			}
-			//printContainerElements(FromContainer, "from");
-			//printContainerElements(ToContainer, "to");
-			//printContainerElements(WhichContainer, "which");
-			
-			bool flag=false;
-			for (unsigned long long i = WhichContainer.Size-1; (i>=0 && flag==false); i--)
+
+			for (int i = WhichContainer.Length - 1; i>0; i--)
 			{
-				//cout << "remove " << WhichContainer[i] << " element" << "___" << i << "___" << endl;
 				FromContainer.RemoveByIndex(WhichContainer[i]);
-				//printContainerElements(FromContainer, "from");
-				//printContainerElements(WhichContainer, "which");
-				flag = i == 0;
 			}
-			//FromContainer.RemoveByIndex(FromContainer.Size - 1);
-			//printContainerElements(FromContainer, "from");
-			//FromContainer.RemoveByIndex(FromContainer.Size - 1);
+			FromContainer.RemoveByIndex(WhichContainer[zero]);
 		}
 
-		inline void printContainerElements(IndexContainer<unsigned long long> &container, char* title)
+		void printAllElements()
 		{
-			cout << "PRINT CONTAINER " << title<<" with size="<<container.Size<<endl;
-			if(container.Size==0) return;
-			for(unsigned long long i=0; i<container.Size; i++)
+			cout << "PRINT ALL ITEMS" << endl;
+			for(int i=0; i<AllItems.Length;i++)
 			{
-				cout << title << "[" << i << "]=" << container[i] <<" and AI[" << container[i] <<"]="<<AllItems[container[i]].Number<< endl;
+				cout << "A[" << i << "]=" << AllItems[i].BitMask.to_string() << " and K=" << AllItems[i].K << " and Support=" << AllItems[i].Support << endl;
+
 			}
 		}
 
-		unsigned long long BitsetToNumber(bitset<BITSET_SIZE> & bitset)
+		inline void printContainerElements(IndexContainer<int> &container, string title)
 		{
-			unsigned long long restult = 0;
-			for(unsigned long long i=0; i<BITSET_SIZE; i++)
+			cout << "PRINT CONTAINER " << title << " with size=" << container.Length << endl;
+			if (container.Length == 0)
 			{
-				if(bitset[i]==1)
-				{
-					restult = (restult * 10) + i;
-				}
+				return;
 			}
-			return restult;
+			for (auto &index:container)
+			{
+				cout << title << "[" << index << "]=" << index << " and AI[" << index << "]=" << AllItems[index].BitMask.to_string() << " and support=" << AllItems[index].Support << " and stopNo=" << AllItems[index].StopNo << " and K=" << AllItems[index].K << endl;
+			}
 		}
+
+		
 
 #pragma endregion
 
 #pragma region CountSupport
 
-		inline void CountSupport(unsigned long long &stopNo)
+		inline void CountSupport(int &stopNo)
 		{
-			auto first = DICparameters->NeedTransactions*(stopNo - 1);
-			auto last = DICparameters->NeedTransactions*stopNo - 1;
-			cout << first << ":" << last << endl;
-			for (unsigned long long i = first; i <= last;i++)
+			IncrementStopNoInContainer(dashedCircle);
+			IncrementStopNoInContainer(dashedBox);
+			
+			int first = DICparameters->NeedTransactions*(stopNo - 1);
+			int last = DICparameters->NeedTransactions*stopNo - 1;
+			
+			for (int i = first; i <= last;i++)
 			{
-				cout << "Current transaction is = " << Transactions[i].to_string() << endl;
-				CountSupportInContainer(dashedCircle, i);
-				CountSupportInContainer(dashedBox, i);
+				CountSupportInContainer(dashedCircle, Transactions[i]);
+				CountSupportInContainer(dashedBox, Transactions[i]);
 			}
-
-			for(unsigned long long i=0; i<AllItems.Size;i++)
+		}
+		
+		inline void IncrementStopNoInContainer(IndexContainer<int> &container)
+		{
+			for (auto &index:container)
 			{
-				cout << "AllItems[" << i << "]=" << AllItems[i].Number << " and support=" << AllItems[i].Support<<endl;
+				AllItems[index].StopNo++;
 			}
 		}
 
-		inline void CountSupportInContainer(IndexContainer<unsigned long long>& container, unsigned long long itemInTransaction)
+		inline void CountSupportInContainer(IndexContainer<int> & container, bitset<BITSET_SIZE> & transaction)
 		{
-			cout << "I am here " << itemInTransaction << endl;
-			for (unsigned long long j = 0; j<container.Size; j++)
+			for(auto &index:container)
 			{
-				AllItems[container[j]].StopNo++;
-				cout << "Check BM for " << Transactions[itemInTransaction].to_string() << " and " << AllItems[container[j]].BitMask << endl;
-				if (checkBitMask(AllItems[container[j]].BitMask, Transactions[itemInTransaction]) && AllItems[container[j]].Number>0)
-				{
-					AllItems[container[j]].Support++;
-					cout << "itemset " << AllItems[container[j]].Number << " will support" << endl;
-				}
+				AllItems[index].CountNewSupport(transaction);
 			}
 		}
 
@@ -166,92 +140,63 @@ namespace DIC
 
 #pragma region GenerateCandidates
 
-		void GenerateCandidatesFromContainer(unsigned long long itemInTransaction, IndexContainer<unsigned long long> &container)
+		void GenerateCandidatesFromContainer(Itemsets & item, IndexContainer<int> &container)
 		{
-			//cout << "container size = " << container.Size << endl;
-			for (unsigned long long j = 0; j<container.Size; j++)
+			for (auto &index:container)
 			{
-				if (AllItems[itemInTransaction].K == AllItems[container[j]].K && AllItems[container[j]].Number>0)
+				auto currentItem = AllItems[index];
+				if (item.K == currentItem.K)
 				{
-					cout << "GENERATE CANDIBOBR!" << endl;
-					Itemsets candidate;
-					candidate.BitMask = AllItems[itemInTransaction].BitMask | AllItems[container[j]].BitMask;
-					candidate.K = AllItems[itemInTransaction].K + 1;
-					candidate.Support = 0;
-					candidate.StopNo = 0;
-					candidate.Number = BitsetToNumber(candidate.BitMask);
-					cout << "CANDIBOBR IS " << candidate.Number << " and " << candidate.BitMask.to_string() << endl;
+					auto candidate = Itemsets(item, currentItem);
 					AllItems.Append(candidate);
-				//	cout << "candidate " << candidate.Number << " with bitmask " << candidate.BitMask.to_string() << " was added" << endl;
 				}
 			}
 		}
 
 		inline void GenerateCandidates()
 		{
-			auto transfer = IndexContainer<unsigned long long>(DICparameters->CountOfItemsets);
-			auto PreviousItemsetSize = AllItems.Size;
-			
-			//printContainerElements(dashedCircle, "dashedCircle");
-			
-			for (unsigned long long i = 0; i<dashedCircle.Size; i++)
+			transferIndexes.ReUse();
+			int PreviousAllItemsSize = AllItems.Length;
+			for (int i = 0; i<dashedCircle.Length; i++)
 			{
-				/*cout << "DC[" << i << "]="
-					<< dashedCircle[i]
-					<< " and AI["
-					<< dashedCircle[i]
-					<< "]="
-					<< AllItems[dashedCircle[i]].BitMask.to_string()
-					<< " and support=" 
-					<< AllItems[dashedCircle[i]].Support << endl;*/
 				if (AllItems[dashedCircle[i]].Support >= DICparameters->MinimumSupport)
 				{
-					transfer.Append(i);
-					//cout << "add to retired " << dashedCircle[i] << endl;
-					GenerateCandidatesFromContainer(dashedCircle[i], solidBox);
-					GenerateCandidatesFromContainer(dashedCircle[i], dashedBox);					
-					
+					transferIndexes.Append(i);
+					GenerateCandidatesFromContainer(AllItems[dashedCircle[i]], dashedBox);
+					GenerateCandidatesFromContainer(AllItems[dashedCircle[i]], solidBox);
+
 				}
 			}
-			//printContainerElements(transfer, "transfer");
-			transferBetweenContainers(dashedCircle, dashedBox, transfer);
-			
-			for (unsigned long long i = PreviousItemsetSize; i<AllItems.Size; i++)
+
+			transferBetweenContainers(dashedCircle, dashedBox, transferIndexes);
+
+			for (int i = PreviousAllItemsSize; i<AllItems.Length;i++)
 			{
-				//cout << "added to DC" << endl;
-				if (AllItems[i].Number > 0)
-				{
-					dashedCircle.Append(i);
-				}
+				dashedCircle.Append(i);
 			}
-			transfer.Clean();
 		}
 
 #pragma endregion 
 
 #pragma region CheckPassCompletion
 
-		inline void CheckPassCompletion(unsigned long long &stopNo)
+		inline void CheckPassCompletion(  int &stopNo)
 		{
-			//cout << "GLOBAL STOP NO = " << stopNo<<endl;
-			CheckPassCompletionInContainer(dashedCircle, solidCircle, stopNo, true);
+			CheckPassCompletionInContainer(dashedCircle, solidCircle, stopNo);
 			CheckPassCompletionInContainer(dashedBox, solidBox, stopNo);
 		}
 
-		inline void CheckPassCompletionInContainer(IndexContainer<unsigned long long> & SourceContainer, IndexContainer<unsigned long long> & TargetContainer, unsigned long long &stopNo, bool fakeElement=false)
+		inline void CheckPassCompletionInContainer(IndexContainer<  int> & SourceContainer, IndexContainer<  int> & TargetContainer,   int &stopNo)
 		{
-			auto transfer = IndexContainer<unsigned long long>(DICparameters->CountOfItemsets);
-			for (unsigned long long j = (0+fakeElement); j<SourceContainer.Size; j++)
+			transferIndexes.ReUse();
+			for (int j = 0; j<SourceContainer.Length; j++)
 			{
 				if (AllItems[SourceContainer[j]].StopNo == stopNo)
 				{
-					//cout << "added to transfer " << AllItems[SourceContainer[j]].Number << endl;
-					transfer.Append(j);
+					transferIndexes.Append(j);
 				}
 			}
-			//cout << "Start transfer " << endl;
-			transferBetweenContainers(SourceContainer, TargetContainer, transfer);
-			transfer.Clean();
+			transferBetweenContainers(SourceContainer, TargetContainer, transferIndexes);
 		}
 
 #pragma endregion 
@@ -264,61 +209,59 @@ namespace DIC
 			Transactions	= transactions;
 			
 			AllItems		=  IndexContainer<Itemsets>(DICparameters->CountOfItems);
-			dashedCircle	=  IndexContainer<unsigned long long>(DICparameters->CountOfItemsets);
-			dashedBox		=  IndexContainer<unsigned long long>(DICparameters->CountOfItemsets);
-			solidCircle		=  IndexContainer<unsigned long long>(DICparameters->CountOfItemsets);
-			solidBox		=  IndexContainer<unsigned long long>(DICparameters->CountOfItemsets);			
+			dashedCircle	=  IndexContainer<int>(DICparameters->CountOfItemsets);
+			dashedBox		=  IndexContainer<int>(DICparameters->CountOfItemsets);
+			solidCircle		=  IndexContainer<int>(DICparameters->CountOfItemsets);
+			solidBox		=  IndexContainer<int>(DICparameters->CountOfItemsets);	
+
+			transferIndexes =  IndexContainer<int>(DICparameters->CountOfItemsets);
 		}
 
 		~DICAlgorithm()
 		{
-			dashedBox.Clean();
-			dashedCircle.Clean();
-			solidBox.Clean();
-			solidCircle.Clean();
-			AllItems.Clean();
+			dashedBox.Clear();
+			dashedCircle.Clear();
+			solidBox.Clear();
+			solidCircle.Clear();
+			AllItems.Clear();
+			transferIndexes.Clear();
 		}
 
 		void GetResult()
 		{
-			
-			unsigned long long stopNo = 0;
-			
-			fillDashedCircle();
-			printContainerElements(dashedCircle, "dashedCircle");
-			
+			initFirstItemsets();
 
-			unsigned long long step = 0;
+			fillDashedCircle();
 			
-			while (dashedIsNotEmpty() && step<2)
+			int stopNo = 0;
+			int step = 0;
+
+			while(dashedIsNotEmpty() && step<=1)
 			{
-				cout << endl<<endl << "*****************STEP "<<step<<"************" << endl<<endl;
-				
-				step++;
 				stopNo++;
+				step++;
 				if (stopNo>DICparameters->CountOfTransactions / DICparameters->NeedTransactions)
 				{
 					stopNo = 1;
 				}
-				cout << "StopNo=" << stopNo << endl;
-				
+
 				cout << "#############COUNT SUPPORT###########" << endl << endl;
 				CountSupport(stopNo);
-				/*printContainerElements(dashedCircle, "dashedCircle");
+				printContainerElements(dashedCircle, "dashedCircle");
 				printContainerElements(dashedBox, "dashedBox");
 				printContainerElements(solidCircle, "solidCircle");
-				printContainerElements(solidBox, "solidBox");*/
+				printContainerElements(solidBox, "solidBox");
 				cout << "#############END COUNT SUPPORT###########" << endl << endl;
-				
+
 				cout << "#############GENERATE CANDIDATES###########" << endl << endl;
 				GenerateCandidates();
-				/*printContainerElements(dashedCircle, "dashedCircle");
+				printContainerElements(dashedCircle, "dashedCircle");
 				printContainerElements(dashedBox, "dashedBox");
 				printContainerElements(solidCircle, "solidCircle");
-				printContainerElements(solidBox, "solidBox");*/
+				printContainerElements(solidBox, "solidBox");
 				cout << "#############END GENERATE CANDIDATES###########" << endl << endl;
 				
-				
+
 				cout << "#############CHECK PASS COMPLITION###########" << endl << endl;
 				CheckPassCompletion(stopNo);
 				printContainerElements(dashedCircle, "dashedCircle");
@@ -326,13 +269,9 @@ namespace DIC
 				printContainerElements(solidCircle, "solidCircle");
 				printContainerElements(solidBox, "solidBox");
 				cout << "#############END CHECK PASS COMPLITION###########" << endl << endl;
-
-				
-				
-				
 			}
-			cout << "SBS=" << solidBox.Size << endl;
-			cout << "step is " << step << endl;
+			cout << "all" << endl;
 		}
+		
 	};
 }

@@ -20,8 +20,8 @@ namespace DIC
 	@return Pointer to type T.
 	*/
 	template <typename Type>
-	Type* allocateAlign(unsigned long long count, size_t length = 64) {
-		return static_cast<Type*>(_mm_malloc(count * sizeof(Type), length));
+	Type* allocateAlign(unsigned long long count, int length = 64) {
+		return static_cast<Type*>(_mm_malloc(count * sizeof(Type), length));		
 	}
 
 	/**

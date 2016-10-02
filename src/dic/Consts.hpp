@@ -10,5 +10,5 @@ Purpose: Some constants for project
 
 namespace DIC
 {
-	const unsigned long long BITSET_SIZE = 16;
+	const int BITSET_SIZE = 10;
 }

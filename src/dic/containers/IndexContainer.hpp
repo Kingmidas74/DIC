@@ -10,7 +10,7 @@ Purpose: Custom container for arrays.
 
 namespace DIC
 {
-	template<typename Content>
+	template<class Content>
 	class IndexContainer
 	{
 
@@ -18,79 +18,145 @@ namespace DIC
 
 		Content* content;
 
+		unsigned long long my_size;
+		unsigned long long my_capacity;
+
 	public:
 		
-		unsigned long long Size;
-		unsigned long long Length;
+		int Length;
 
-		IndexContainer()
+		IndexContainer(): my_size(0), my_capacity(0), Length(0)
 		{
-			Size = 0;
-			Length = 0;
+			
 		}
 
 		IndexContainer(unsigned long long &size)
 		{
 			content = allocateAlign<Content>(size);			
-			Size = 0;
-			Length = size;
+			my_size = size;
+			my_capacity = size;
+			Length = 0;
+		}
+
+		IndexContainer(unsigned long long &size, const Content &initial)
+		{
+			content = allocateAlign<Content>(size);
+			my_size = size;
+			my_capacity = size;
+			Length = 0;
+			for(unsigned long long i=0; i<size; i++)
+			{
+				content[i] = initial;
+			}
+		}
+
+		IndexContainer(unsigned int &size)
+		{
+			content = allocateAlign<Content>(size);
+			my_size = size;
+			my_capacity = size;
+			Length = 0;
+		}
+
+		IndexContainer(unsigned int &size, const Content &initial)
+		{
+			content = allocateAlign<Content>(size);
+			my_size = size;
+			my_capacity = size;
+			Length = 0;
+			for (unsigned int i = 0; i<size; i++)
+			{
+				content[i] = initial;
+			}
+		}
+
+		IndexContainer(int &size)
+		{
+			content = allocateAlign<Content>(size);
+			my_size = size;
+			my_capacity = size;
+			Length = 0;
+		}
+
+		IndexContainer(int &size, const Content &initial)
+		{
+			content = allocateAlign<Content>(size);
+			my_size = size;
+			my_capacity = size;
+			Length = 0;
+			for (int i = 0; i<size; i++)
+			{
+				content[i] = initial;
+			}
 		}
 
 		~IndexContainer()
 		{
 			
 		}
-
-		void Clean()
+		
+		int * begin()
 		{
-			if (sizeof(content) / sizeof(Content) > 0)
-			{
-				freeAlign<Content>(content);
-				Size = 0;
-				Length = 0;
-			}
+			return Length>0 ? &content[0] : nullptr;
+		}
+
+		int * end()
+		{
+			return Length>0 ? &content[Length] : nullptr;
+		}
+
+
+		Content & operator[](const unsigned long &index) {
+			return content[index];
 		}
 
 		void Clear()
 		{
-				Size = 0;
-			
+			if (sizeof(content) / sizeof(Content) > 0)
+			{
+				freeAlign<Content>(content);
+				my_size = 0;
+				Length = 0;
+			}
 		}
 
-		Content & operator[](unsigned long long & index) {
-			return content[index];
-		}
 
-		Content & operator[](unsigned int & index) {
-			return content[index];
+		void ReUse()
+		{
+			Length = 0;
 		}
 
 		void Append(Content &item)
 		{
-			if (Length > 0)
+			if (my_size > 0)
 			{
-				content[Size] = item;
-				Size++;
+				content[Length] = item;
+				Length++;
 			}
 			else
 			{
 				throw "Memory is not allocated!";
 			}
 		}
-		
-		void RemoveByIndex(unsigned long long index)
-		{	
 
-			//cout << "REMOVE BY INDEX " << index << endl;
-			for (unsigned long long i = index;i < Size-1; ++i)
+		
+
+
+		
+
+		void RemoveByIndex(int &index)
+		{	
+			if (Length == 0 || Length==index) throw "Invalid element index";
+			if (Length == 1) 
 			{
-				//cout << "AND " << (i + 1) << " BECAME A " << i << endl;
-				//cout << "AND content[" << i << " WAS A " << content[i] << endl;
-				content[i] = content[i + 1];
-				//cout << "AND content[" << i << " BECAME A " << content[i] << endl;
+				ReUse();
+				return;
 			}
-			--Size;
-			content[Size] = NULL;
+			for (int i = index+1;i < Length; i++)
+			{
+				content[i-1] = content[i];
+			}
+			Length--;
 		}
 
 	};

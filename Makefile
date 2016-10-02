@@ -1,7 +1,7 @@
 SOURCE_FOLDER	 := ./src
 ENTRY_POINT	 := $(SOURCE_FOLDER)/Source.cpp
 TARGET		 := ./build/
-BASE_OPTIONS	 := -std=c++11 -qopenmp -O3 -vec-report=5 -I $(SOURCE_FOLDER) -Who-unknown-pragmas
+BASE_OPTIONS	 := -std=c++14 -qopenmp -O3 -vec-report=5 -I $(SOURCE_FOLDER) -Who-unknown-pragmas
 
 all:
 	mkdir -p $(TARGET)

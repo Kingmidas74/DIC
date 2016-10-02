@@ -9,12 +9,6 @@ Purpose: Incapsulation of workflow.
 @version	0.0.0.1 9/17/2016
 */
 
-
-#include <fstream>
-#include <sstream>
-#include <ctime>
-#include <omp.h>
-
 namespace DIC {
 
 	using namespace std;
@@ -25,7 +19,7 @@ namespace DIC {
 
 	public:
 
-		Executor(DIC::Parameters* algorithmParameters)
+		Executor(Parameters* algorithmParameters)
 		{
 			AlgorithmParameters = algorithmParameters;
 			Runtime = 0;
@@ -42,14 +36,17 @@ namespace DIC {
 				auto start = omp_get_wtime();
 				auto algorithm = DICAlgorithm(transactions, AlgorithmParameters);
 				algorithm.GetResult();
+				
 				Runtime = (omp_get_wtime() - start);
 
 				//WriteLog();
 				//tryWriteFile(clustering->ResultMatrix);
 			}
 			else {
+				transactions.Clear();
 				exit(EXIT_FAILURE);
 			}
+			transactions.Clear();			
 		}
 
 		virtual ~Executor()
@@ -80,7 +77,7 @@ namespace DIC {
 		bool tryReadFile(IndexContainer<bitset<BITSET_SIZE>> &data, Parameters* parameters)
 		{
 			fstream infile(parameters->InputFilePath);
-			unsigned long long row = 0;
+			  int row = 0;
 			while (row<parameters->CountOfTransactions && infile)
 			{
 				string s;
@@ -94,7 +91,7 @@ namespace DIC {
 				{
 
 					string str;
-					unsigned long long p;
+					  int p;
 					if (!getline(ss, str, ';')) break;
 
 					istringstream iss(str);
@@ -105,7 +102,6 @@ namespace DIC {
 					}
 
 				}
-				cout << "transaction " << row << "=" << bitmask.to_string() << endl;
 				data.Append(bitmask);
 				row++;
 			}

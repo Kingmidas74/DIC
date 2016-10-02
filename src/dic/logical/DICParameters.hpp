@@ -46,7 +46,7 @@ namespace DIC {
 		Parameters GetParameters()
 		{
 			parse();
-			allParameters.CountOfItemsets = pow(2, allParameters.CountOfItems);
+			allParameters.CountOfItemsets = 100;//pow(2, allParameters.CountOfItems);
 			allParameters.NeedTransactions = 5;//allParameters.CountOfCores*allParameters.CountOfThreads*allParameters.MPerThread;
 			return allParameters;
 		}
@@ -155,7 +155,7 @@ namespace DIC {
 		{
 			if (&_argv[numberOfparameter])
 			{
-				unsigned long long val;
+				  int val;
 				istringstream iss(_argv[numberOfparameter]);
 				if (iss >> val)
 				{

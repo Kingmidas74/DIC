@@ -16,15 +16,15 @@ namespace DIC
 
 	struct Parameters
 	{
-		unsigned long long	CountOfTransactions;	//во входном файле
-		unsigned long long	CountOfCores;
-		unsigned long long	CountOfThreads;
-		unsigned long long	CountOfItems;   //всего товаров
-		unsigned long long	CountOfItemsets;  //2^пред
-		unsigned long long	MinimumSupport;
+		  int	CountOfTransactions;	//во входном файле
+		  int	CountOfCores;
+		  int	CountOfThreads;
+		  int	CountOfItems;   //всего товаров
+		  int	CountOfItemsets;  //2^пред
+		  int	MinimumSupport;
 		string				InputFilePath;
 		string				OutputFilePath;
-		unsigned long long	NeedTransactions;
-		unsigned long long	MPerThread;
+		  int	NeedTransactions;
+		  int	MPerThread;
 	};
 }
