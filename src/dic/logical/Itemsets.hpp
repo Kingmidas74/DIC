@@ -21,7 +21,7 @@ namespace DIC
 
 			Itemsets()
 			{
-				this->BitMask = bitset<BITSET_SIZE>(0);				
+				this->BitMask = bitset<BITSET_SIZE>(0);
 				this->BitMask[0] = 1;
 				this->K = 1;
 				this->Support = 0;

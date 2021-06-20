@@ -21,18 +21,24 @@ namespace DIC
 	*/
 	template <typename Type>
 	Type* allocateAlign(unsigned long long count, int length = 64) {
-		return static_cast<Type*>(_mm_malloc(count * sizeof(Type), length));		
+		Type * result;
+		result = static_cast<Type*>(aligned_alloc(length,(count) * sizeof(Type)));
+		if (result == nullptr) {
+			printf( "\n ERROR: Can't allocate memory for matrices. Aborting... \n\n");
+			exit(EXIT_FAILURE);
+		}
+		return result;
 	}
 
 	/**
 	Free memory align
 
-	@param pointer The pointer on array of type T.	
+	@param pointer The pointer on array of type T.
 	*/
 	template <typename Type>
 	void freeAlign(Type* pointer) {
 		if (pointer) {
-			_mm_free(pointer);
+			free(pointer);
 		}
 	}
 }

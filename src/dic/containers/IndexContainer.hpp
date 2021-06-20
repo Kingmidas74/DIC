@@ -22,17 +22,17 @@ namespace DIC
 		unsigned long long my_capacity;
 
 	public:
-		
+
 		int Length;
 
 		IndexContainer(): my_size(0), my_capacity(0), Length(0)
 		{
-			
+
 		}
 
 		IndexContainer(unsigned long long &size)
 		{
-			content = allocateAlign<Content>(size);			
+			content = allocateAlign<Content>(size);
 			my_size = size;
 			my_capacity = size;
 			Length = 0;
@@ -92,9 +92,9 @@ namespace DIC
 
 		~IndexContainer()
 		{
-			
+
 		}
-		
+
 		int * begin()
 		{
 			return Length>0 ? &content[0] : nullptr;
@@ -139,15 +139,15 @@ namespace DIC
 			}
 		}
 
-		
 
 
-		
+
+
 
 		void RemoveByIndex(int &index)
-		{	
+		{
 			if (Length == 0 || Length==index) throw "Invalid element index";
-			if (Length == 1) 
+			if (Length == 1)
 			{
 				ReUse();
 				return;

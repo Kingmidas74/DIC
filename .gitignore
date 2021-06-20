@@ -33,3 +33,5 @@ build/
 
 #Files
 input.csv
+
+.vscode/

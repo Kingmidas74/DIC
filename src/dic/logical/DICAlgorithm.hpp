@@ -17,7 +17,7 @@ namespace DIC
 	private:
 
 #pragma region Fields
-		
+
 		IndexContainer<int>	 dashedCircle;
 		IndexContainer<int>	 dashedBox;
 		IndexContainer<int>	 solidCircle;
@@ -40,7 +40,7 @@ namespace DIC
 				dashedCircle.Append(i);
 			}
 		}
-		
+
 		inline void initFirstItemsets()
 		{
 			for(int i=0; i<=DICparameters->CountOfItems; i++)
@@ -99,7 +99,7 @@ namespace DIC
 			}
 		}
 
-		
+
 
 #pragma endregion
 
@@ -109,17 +109,17 @@ namespace DIC
 		{
 			IncrementStopNoInContainer(dashedCircle);
 			IncrementStopNoInContainer(dashedBox);
-			
+
 			int first = DICparameters->NeedTransactions*(stopNo - 1);
 			int last = DICparameters->NeedTransactions*stopNo - 1;
-			
+
 			for (int i = first; i <= last;i++)
 			{
 				CountSupportInContainer(dashedCircle, Transactions[i]);
 				CountSupportInContainer(dashedBox, Transactions[i]);
 			}
 		}
-		
+
 		inline void IncrementStopNoInContainer(IndexContainer<int> &container)
 		{
 			for (auto &index:container)
@@ -176,7 +176,7 @@ namespace DIC
 			}
 		}
 
-#pragma endregion 
+#pragma endregion
 
 #pragma region CheckPassCompletion
 
@@ -199,7 +199,7 @@ namespace DIC
 			transferBetweenContainers(SourceContainer, TargetContainer, transferIndexes);
 		}
 
-#pragma endregion 
+#pragma endregion
 
 	public:
 
@@ -207,12 +207,12 @@ namespace DIC
 		{
 			DICparameters	= parameters;
 			Transactions	= transactions;
-			
+
 			AllItems		=  IndexContainer<Itemsets>(DICparameters->CountOfItems);
 			dashedCircle	=  IndexContainer<int>(DICparameters->CountOfItemsets);
 			dashedBox		=  IndexContainer<int>(DICparameters->CountOfItemsets);
 			solidCircle		=  IndexContainer<int>(DICparameters->CountOfItemsets);
-			solidBox		=  IndexContainer<int>(DICparameters->CountOfItemsets);	
+			solidBox		=  IndexContainer<int>(DICparameters->CountOfItemsets);
 
 			transferIndexes =  IndexContainer<int>(DICparameters->CountOfItemsets);
 		}
@@ -232,7 +232,7 @@ namespace DIC
 			initFirstItemsets();
 
 			fillDashedCircle();
-			
+
 			int stopNo = 0;
 			int step = 0;
 
@@ -260,7 +260,7 @@ namespace DIC
 				printContainerElements(solidCircle, "solidCircle");
 				printContainerElements(solidBox, "solidBox");
 				cout << "#############END GENERATE CANDIDATES###########" << endl << endl;
-				
+
 
 				cout << "#############CHECK PASS COMPLITION###########" << endl << endl;
 				CheckPassCompletion(stopNo);
@@ -272,6 +272,6 @@ namespace DIC
 			}
 			cout << "all" << endl;
 		}
-		
+
 	};
 }

@@ -36,7 +36,7 @@ namespace DIC {
 				auto start = omp_get_wtime();
 				auto algorithm = DICAlgorithm(transactions, AlgorithmParameters);
 				algorithm.GetResult();
-				
+
 				Runtime = (omp_get_wtime() - start);
 
 				//WriteLog();
@@ -46,14 +46,14 @@ namespace DIC {
 				transactions.Clear();
 				exit(EXIT_FAILURE);
 			}
-			transactions.Clear();			
+			transactions.Clear();
 		}
 
 		virtual ~Executor()
 		{
 
 		}
-	
+
 	private:
 		Parameters* AlgorithmParameters;
 		double Runtime;
